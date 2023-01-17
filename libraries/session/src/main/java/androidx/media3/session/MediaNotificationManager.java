@@ -253,8 +253,7 @@ import java.util.concurrent.TimeoutException;
   }
 
   private static boolean shouldRunInForeground(Player player) {
-    return player.getPlayWhenReady()
-        && (player.getPlaybackState() == Player.STATE_READY
+    return (player.getPlaybackState() == Player.STATE_READY
             || player.getPlaybackState() == Player.STATE_BUFFERING);
   }
 
