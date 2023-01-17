@@ -253,8 +253,15 @@ import java.util.concurrent.TimeoutException;
   }
 
   private static boolean shouldRunInForeground(Player player) {
-    return (player.getPlaybackState() == Player.STATE_READY
+    if (Util.SDK_INT >= 30) {
+      // HACK: always be on foreground to "fix" Context.startForegroundService() did not then call Service.startForeground()
+      return (player.getPlaybackState() == Player.STATE_READY
             || player.getPlaybackState() == Player.STATE_BUFFERING);
+    } else {
+      // HACK: keep the normal behavior on old Androids to make the notification hidable
+      return player.getPlayWhenReady() && (player.getPlaybackState() == Player.STATE_READY
+            || player.getPlaybackState() == Player.STATE_BUFFERING);
+    }
   }
 
   private static final class MediaControllerListener
